@@ -12,4 +12,11 @@ XOX.controller('myController', function($scope, $http){
 		{value: '-'}, {value: '-'}, {value: '-'},
 		{value: '-'}, {value: '-'}, {value: '-'},
 		{value: '-'}, {value: '-'}, {value: '-'}]
+
+
+	$scope.move = function(index, value)
+	{
+		$scope.board[index].value = 'X';
+	}
+
 	});
