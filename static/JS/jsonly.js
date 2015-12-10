@@ -22,6 +22,7 @@ XOX.controller('myController', function($scope, $http){
 		$scope.xCount++;
 
 		var range = $scope.board.length;
+		$scope.checkGameOver(range);
 		if(($scope.xCount + $scope.oCount) < 8)
 		{
 			$scope.aiMove(range);
@@ -44,6 +45,18 @@ XOX.controller('myController', function($scope, $http){
 		else
 		{
 			$scope.aiMove(range);
+		}
+	}
+
+	$scope.checkGameOver = function(range)
+	{
+		console.log("check");
+		console.log($scope.board[1] != '-');
+		console.log($scope.board[1] != '-');
+		console.log($scope.board[1] != '-');
+		if($scope.board[1].value != '-' && $scope.board[0].value == $scope.board[1].value && $scope.board[1].value == $scope.board[2].value)
+		{
+			alert("Game Over")
 		}
 	}
 
