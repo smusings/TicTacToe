@@ -16,13 +16,16 @@ XOX.controller('myController', function($scope, $http){
 
 	$scope.xCount = 0;
 	$scope.oCount = 0;
+
 	$scope.move = function(index, value)
 	{
 		$scope.board[index].value = 'X';
 		$scope.xCount++;
 
 		var range = $scope.board.length;
+		
 		$scope.checkGameOver(range);
+
 		if(($scope.xCount + $scope.oCount) < 8)
 		{
 			$scope.aiMove(range);
@@ -50,13 +53,27 @@ XOX.controller('myController', function($scope, $http){
 
 	$scope.checkGameOver = function(range)
 	{
-		console.log("check");
-		console.log($scope.board[1] != '-');
-		console.log($scope.board[1] != '-');
-		console.log($scope.board[1] != '-');
-		if($scope.board[1].value != '-' && $scope.board[0].value == $scope.board[1].value && $scope.board[1].value == $scope.board[2].value)
+		for(i=0; i<7; i+=3)	//row
 		{
-			alert("Game Over")
+			if($scope.board[i+1].value != '-' && $scope.board[i].value == $scope.board[i+1].value && $scope.board[i+1].value == $scope.board[i+2].value)
+			{
+				alert("Game Over!")
+			}
+		}
+
+		for(i=0; i<3; i++)	//column
+		{
+			console.log(i);
+			if($scope.board[i+3].value != '-' && $scope.board[i].value == $scope.board[i+3].value && $scope.board[i+3].value == $scope.board[i+6].value)
+			{
+				alert("Game Over!")
+			}
+		}
+
+		if($scope.board[4].value != '-' && (($scope.board[0].value == $scope.board[4].value && $scope.board[4].value == $scope.board[8].value) 
+			|| ($scope.board[2].value == $scope.board[4].value && $scope.board[4].value == $scope.board[6].value)))
+		{
+			alert("Game Over!")
 		}
 	}
 
