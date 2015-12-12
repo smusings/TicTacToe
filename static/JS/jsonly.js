@@ -57,23 +57,38 @@ XOX.controller('myController', function($scope, $http){
 		{
 			if($scope.board[i+1].value != '-' && $scope.board[i].value == $scope.board[i+1].value && $scope.board[i+1].value == $scope.board[i+2].value)
 			{
-				alert("Game Over!")
+				alert("Game Over!");
+				$scope.gameOver();
 			}
 		}
 
 		for(i=0; i<3; i++)	//column
 		{
-			console.log(i);
 			if($scope.board[i+3].value != '-' && $scope.board[i].value == $scope.board[i+3].value && $scope.board[i+3].value == $scope.board[i+6].value)
 			{
-				alert("Game Over!")
+				alert("Game Over!");
+				$scope.gameOver();
 			}
 		}
 
 		if($scope.board[4].value != '-' && (($scope.board[0].value == $scope.board[4].value && $scope.board[4].value == $scope.board[8].value) 
 			|| ($scope.board[2].value == $scope.board[4].value && $scope.board[4].value == $scope.board[6].value)))
 		{
-			alert("Game Over!")
+			alert("Game Over!");
+			$scope.gameOver();
+		}
+	}
+
+	$scope.gameOver = function()
+	{
+
+		var range = $scope.board.length;
+		for(i = 0; i<range; i++)
+		{
+			if($scope.board[i].value == '-')
+			{
+				$scope.board[i].value = '_';
+			}
 		}
 	}
 
