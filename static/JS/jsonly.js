@@ -14,25 +14,45 @@ XOX.controller('myController', function($scope, $http){
 		{value: '-'}, {value: '-'}, {value: '-'}]
 
 
-	$scope.xCount = 0;
-	$scope.oCount = 0;
+	$scope.xCount = [];
+	$scope.oCount = [];
 
 	$scope.move = function(index, value)
 	{
 		$scope.board[index].value = 'X';
-		$scope.xCount++;
+		$scope.xCount.push(Number(index));
 
 		var range = $scope.board.length;
 		
 		$scope.checkGameOver(range);
 
-		if(($scope.xCount + $scope.oCount) < 8)
+		if(($scope.xCount.length + $scope.oCount.length) < 8)
 		{
-			$scope.aiMove(range);
+			$scope.aiNoLose(range);
 		}
 		else
 		{
 			alert("game over!");
+		}
+	}
+
+	$scope.aiNoLose = function(range)
+	{
+		var moved = false;
+		
+		$scope.xCount.forEach(function(item, index, array) {
+			if($scope.xCount.indexOf(item+1)>0 && $scope.oCount.indexOf(item+2)<0)
+			{
+				$scope.board[item+2].value = 'O';
+				$scope.oCount.push(item+2)
+				moved = true;
+			}
+		})
+
+		console.log(moved);
+		if(!moved)
+		{
+			$scope.aiMove(range);
 		}
 	}
 
@@ -42,8 +62,8 @@ XOX.controller('myController', function($scope, $http){
 
 		if($scope.board[move] != null && $scope.board[move].value == '-')
 		{
-			$scope.board[move].value = '0'
-			$scope.oCount++;
+			$scope.board[move].value = 'O';
+			$scope.oCount.push(move)
 		}
 		else
 		{

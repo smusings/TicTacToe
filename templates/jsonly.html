@@ -13,6 +13,8 @@
 				<button ng-click="move([$index+1], board[$index+1].value)" id="grid{[$index+1]}" ng-disabled="board[$index+1].value != '-'" ng-value="board[$index+1].value">{[ board[$index+1].value ]}</button>
 				<button ng-click="move([$index+2], board[$index+2].value)" id="grid{[$index+2]}" ng-disabled="board[$index+2].value != '-'" ng-value="board[$index+2].value">{[ board[$index+2].value ]}</button>
 			</div>
+			<div class="row">X-Moves: {[xCount]}</div>
+			<div class="row">O-Moves: {[oCount]}</div>
 		</div>
 		<script src="/static/npm/node_modules/angular/angular.js"></script>
 		<script src="/static/js/jsonly.js"></script>
