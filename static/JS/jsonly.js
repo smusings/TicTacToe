@@ -8,22 +8,23 @@ XOX.config(['$interpolateProvider', function($interpolateProvider) {
 
 XOX.controller('myController', function($scope, $http){
 
-	$scope.board = [
-		{value: '-'}, {value: '-'}, {value: '-'},
-		{value: '-'}, {value: '-'}, {value: '-'},
-		{value: '-'}, {value: '-'}, {value: '-'}]
 
 	$scope.xCount 		 = 0;
 	$scope.oCount 		 = 0;
 	$scope.suggestedMove = -1;
 
+	$scope.board = [
+		{value: '-'}, {value: '-'}, {value: '-'},
+		{value: '-'}, {value: '-'}, {value: '-'},
+		{value: '-'}, {value: '-'}, {value: '-'}]
+
+
+
 	$scope.move = function(index, value)
 	{
+		var range = $scope.board.length;
 		$scope.board[index].value = 'X';
 		$scope.xCount++;
-
-		var range = $scope.board.length;
-		
 		$scope.checkGameOver(range);
 
 		if(($scope.xCount + $scope.oCount) < 8)
@@ -46,17 +47,30 @@ XOX.controller('myController', function($scope, $http){
 
 		if($scope.suggestedMove == -1)
 		{
-			$scope.aiMove(range);
+			$scope.aiRandomMove(range);
+		}
+		else if($scope.suggedtMove != -1)
+		{
+
+			$scope.board[$scope.suggestedMove].value = 'O';
+			$scope.oCount++;
+			$scope.suggestedMove = -1;
+			$scope.checkGameOver(range);
+		}
+	}
+
+	$scope.aiRandomMove = function(range)
+	{
+		var move = Math.floor((Math.random() * range) + 1);
+
+		if($scope.board[move] != null && $scope.board[move].value == '-')
+		{
+			$scope.board[move].value = 'O';
+			$scope.oCount++;
 		}
 		else
 		{
-			$scope.board[$scope.suggestedMove].value = 'O';
-			$scope.suggestedMove = -1;
-			$scope.oCount++;
-			if($scope.board[$scope.suggestedMove].value == 'O')
-			{
-				$scope.checkGameOver(range);
-			}
+			$scope.aiRandomMove(range);
 		}
 	}
 
@@ -92,21 +106,6 @@ XOX.controller('myController', function($scope, $http){
 		}
 	}
 
-	$scope.aiMove = function(range)
-	{
-		var move = Math.floor((Math.random() * range) + 1);
-
-		if($scope.board[move] != null && $scope.board[move].value == '-')
-		{
-			$scope.board[move].value = 'O';
-			$scope.oCount++;
-		}
-		else
-		{
-			$scope.aiMove(range);
-		}
-	}
-
 	$scope.checkGameOver = function(range)
 	{
 		for(i=0; i<7; i+=3)	//row
@@ -115,6 +114,7 @@ XOX.controller('myController', function($scope, $http){
 			{
 				alert("Game Over!");
 				$scope.gameOver();
+				break;
 			}
 		}
 
@@ -124,13 +124,14 @@ XOX.controller('myController', function($scope, $http){
 			{
 				alert("Game Over!!");
 				$scope.gameOver();
+				break;
 			}
 		}
 
 		if($scope.board[4].value != '-' && (($scope.board[0].value == $scope.board[4].value && $scope.board[4].value == $scope.board[8].value) 
 			|| ($scope.board[2].value == $scope.board[4].value && $scope.board[4].value == $scope.board[6].value)))
 		{
-			alert("Game Over!!!");
+			console.log("Game Over!!!");
 			$scope.gameOver(range);
 		}
 	}
