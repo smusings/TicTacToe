@@ -29,25 +29,32 @@ XOX.controller('myController', function($scope, $http){
 
 		if(($scope.xCount + $scope.oCount) < 8)
 		{
-			$scope.aiNoLose(range);
+			$scope.aiNoLose(range, 'O');
 		}
 	}
 
-	$scope.aiNoLose = function(range)
+	$scope.aiNoLose = function(range, param)
 	{
-		$scope.evalMove(0,1,2);	// row 1
-		$scope.evalMove(3,4,5);	// row 2
-		$scope.evalMove(6,7,8); // row 3
-		$scope.evalMove(0,3,6); // col 1
-		$scope.evalMove(1,4,7); // col 2
-		$scope.evalMove(2,5,8); // col 3
-		$scope.evalMove(0,4,8); // diagonal left to right
-		$scope.evalMove(2,4,6); // diagonal right to left
+		$scope.evalMove(0,1,2,param);	// row 1
+		$scope.evalMove(3,4,5,param);	// row 2
+		$scope.evalMove(6,7,8,param); // row 3
+		$scope.evalMove(0,3,6,param); // col 1
+		$scope.evalMove(1,4,7,param); // col 2
+		$scope.evalMove(2,5,8,param); // col 3
+		$scope.evalMove(0,4,8,param); // diagonal left to right
+		$scope.evalMove(2,4,6,param); // diagonal right to left
 		
 
 		if($scope.suggestedMove == -1)
 		{
-			$scope.aiRandomMove(range);
+			if(param == 'O')
+			{
+				$scope.aiNoLose(range, 'X')
+			}
+			else
+			{
+				$scope.aiRandomMove(range);
+			}
 		}
 		else if($scope.suggedtMove != -1)
 		{
@@ -74,27 +81,27 @@ XOX.controller('myController', function($scope, $http){
 		}
 	}
 
-	$scope.evalMove = function(a, b, c)
+	$scope.evalMove = function(a, b, c, param)
 	{
 		var item1 = $scope.board[a].value;
 		var item2 = $scope.board[b].value;
 		var item3 = $scope.board[c].value;
 		var move  = -1;
 
-		if(item1 == 'X')
+		if(item1 == param)
 		{
-			if(item2=='X' && item3 == '-')
+			if(item2==param && item3 == '-')
 			{
 				move = c;
 			}
-			else if(item3 == 'X' && item2 == '-')
+			else if(item3 == param && item2 == '-')
 			{
 				move = b;
 			}
 		}
-		else if(move == -1 && item2 == 'X')
+		else if(move == -1 && item2 == param)
 		{
-			if(item3 == 'X' && item1 == '-')
+			if(item3 == param && item1 == '-')
 			{
 				move = a;
 			}
