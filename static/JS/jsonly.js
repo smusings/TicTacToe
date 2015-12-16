@@ -6,37 +6,37 @@ XOX.config(['$interpolateProvider', function($interpolateProvider) {
 }]);	//Jinja uses {{}} so we will use {[]} for angularJS
 
 
-XOX.controller('myController', function($scope, $http){
-
+XOX.controller('myController', function($scope, $http) {
 
 	$scope.xCount 		 = 0;
 	$scope.oCount 		 = 0;
 	$scope.suggestedMove = -1;
-
-	$scope.board = [
+	$scope.board 		 = [
 		{value: '-'}, {value: '-'}, {value: '-'},
 		{value: '-'}, {value: '-'}, {value: '-'},
-		{value: '-'}, {value: '-'}, {value: '-'}]
-
+		{value: '-'}, {value: '-'}, {value: '-'}];
+	$scope.range 		 = $scope.board.length;
+	$scope.isGameOver    = false;     
 
 
 	$scope.move = function(index, value)
 	{
-		var range = $scope.board.length;
 		$scope.board[index].value = 'X';
 		$scope.xCount++;
-		$scope.checkGameOver(range);
+		$scope.checkGameOver($scope.range);
 
-		if(($scope.xCount + $scope.oCount) < 8)
+		if((($scope.xCount + $scope.oCount) < 8) || !$scope.isGameOver)
 		{
-			$scope.aiNoLose(range, 'O');
+			$scope.aiNoLose('O');
 		}
 	}
 
-	$scope.aiNoLose = function(range, param)
+	$scope.aiNoLose = function(param)
 	{
-		$scope.evalMove(0,1,2,param);	// row 1
-		$scope.evalMove(3,4,5,param);	// row 2
+		$scope.suggestedMove = -1;
+
+		$scope.evalMove(0,1,2,param); // row 1
+		$scope.evalMove(3,4,5,param); // row 2
 		$scope.evalMove(6,7,8,param); // row 3
 		$scope.evalMove(0,3,6,param); // col 1
 		$scope.evalMove(1,4,7,param); // col 2
@@ -44,16 +44,15 @@ XOX.controller('myController', function($scope, $http){
 		$scope.evalMove(0,4,8,param); // diagonal left to right
 		$scope.evalMove(2,4,6,param); // diagonal right to left
 		
-
 		if($scope.suggestedMove == -1)
 		{
 			if(param == 'O')
 			{
-				$scope.aiNoLose(range, 'X')
+				$scope.aiNoLose('X')
 			}
 			else
 			{
-				$scope.aiRandomMove(range);
+				$scope.aiRandomMove($scope.range);
 			}
 		}
 		else if($scope.suggedtMove != -1)
@@ -61,14 +60,13 @@ XOX.controller('myController', function($scope, $http){
 
 			$scope.board[$scope.suggestedMove].value = 'O';
 			$scope.oCount++;
-			$scope.suggestedMove = -1;
-			$scope.checkGameOver(range);
+			$scope.checkGameOver($scope.range);
 		}
 	}
 
-	$scope.aiRandomMove = function(range)
+	$scope.aiRandomMove = function()
 	{
-		var move = Math.floor((Math.random() * range) + 1);
+		var move = Math.floor((Math.random() * $scope.range) + 1);
 
 		if($scope.board[move] != null && $scope.board[move].value == '-')
 		{
@@ -77,7 +75,7 @@ XOX.controller('myController', function($scope, $http){
 		}
 		else
 		{
-			$scope.aiRandomMove(range);
+			$scope.aiRandomMove($scope.range);
 		}
 	}
 
@@ -113,7 +111,7 @@ XOX.controller('myController', function($scope, $http){
 		}
 	}
 
-	$scope.checkGameOver = function(range)
+	$scope.checkGameOver = function()
 	{
 		for(i=0; i<7; i+=3)	//row
 		{
@@ -139,19 +137,20 @@ XOX.controller('myController', function($scope, $http){
 			|| ($scope.board[2].value == $scope.board[4].value && $scope.board[4].value == $scope.board[6].value)))
 		{
 			console.log("Game Over!!!");
-			$scope.gameOver(range);
+			$scope.gameOver($scope.range);
 		}
 	}
 
-	$scope.gameOver = function(range)
+	$scope.gameOver = function()
 	{
-		for(i = 0; i<range; i++)
+		for(i = 0; i<$scope.range; i++)
 		{
 			if($scope.board[i].value == '-')
 			{
 				$scope.board[i].value = '_';
 			}
 		}
+		$scope.isGameOver = true
 	}
 
 });
