@@ -86,22 +86,27 @@ XOX.controller('myController', function($scope, $http) {
 		var item3 = $scope.board[c].value;
 		var move  = -1;
 
-		if(item1 == param)
-		{
-			if(item2==param && item3 == '-')
+
+
+		if($scope.suggestedMove == -1)	//about to win check
+		{				
+			if(item1 == param)
 			{
-				move = c;
+				if(item2==param && item3 == '-')
+				{
+					move = c;
+				}
+				else if(item3 == param && item2 == '-')
+				{
+					move = b;
+				}
 			}
-			else if(item3 == param && item2 == '-')
+			else if(move == -1 && item2 == param)
 			{
-				move = b;
-			}
-		}
-		else if(move == -1 && item2 == param)
-		{
-			if(item3 == param && item1 == '-')
-			{
-				move = a;
+				if(item3 == param && item1 == '-')
+				{
+					move = a;
+				}
 			}
 		}
 
@@ -127,7 +132,7 @@ XOX.controller('myController', function($scope, $http) {
 		{
 			if($scope.board[i+3].value != '-' && $scope.board[i].value == $scope.board[i+3].value && $scope.board[i+3].value == $scope.board[i+6].value)
 			{
-				alert("Game Over!!");
+				alert("Game Over!");
 				$scope.gameOver();
 				break;
 			}
@@ -136,7 +141,7 @@ XOX.controller('myController', function($scope, $http) {
 		if($scope.board[4].value != '-' && (($scope.board[0].value == $scope.board[4].value && $scope.board[4].value == $scope.board[8].value) 
 			|| ($scope.board[2].value == $scope.board[4].value && $scope.board[4].value == $scope.board[6].value)))
 		{
-			console.log("Game Over!!!");
+			alert("Game Over!");
 			$scope.gameOver($scope.range);
 		}
 	}
