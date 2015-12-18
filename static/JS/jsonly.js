@@ -8,8 +8,6 @@ XOX.config(['$interpolateProvider', function($interpolateProvider) {
 
 XOX.controller('myController', function($scope, $http) {
 
-	$scope.xCount 		 = 0;
-	$scope.oCount 		 = 0;
 	$scope.suggestedMove = -1;
 	$scope.board 		 = [
 		{value: '-'}, {value: '-'}, {value: '-'},
@@ -22,10 +20,9 @@ XOX.controller('myController', function($scope, $http) {
 	$scope.move = function(index, value)
 	{
 		$scope.board[index].value = 'X';
-		$scope.xCount++;
 		$scope.checkGameOver($scope.range);
 
-		if((($scope.xCount + $scope.oCount) < 8) || !$scope.isGameOver)
+		if(!$scope.isGameOver)
 		{
 			$scope.aiNoLose('O');
 		}
@@ -59,7 +56,6 @@ XOX.controller('myController', function($scope, $http) {
 		{
 
 			$scope.board[$scope.suggestedMove].value = 'O';
-			$scope.oCount++;
 			$scope.checkGameOver($scope.range);
 		}
 	}
@@ -71,7 +67,6 @@ XOX.controller('myController', function($scope, $http) {
 		if($scope.board[move] != null && $scope.board[move].value == '-')
 		{
 			$scope.board[move].value = 'O';
-			$scope.oCount++;
 		}
 		else
 		{
@@ -86,7 +81,9 @@ XOX.controller('myController', function($scope, $http) {
 		var item3 = $scope.board[c].value;
 		var move  = -1;
 
+		
 
+		
 
 		if($scope.suggestedMove == -1)	//about to win check
 		{				
