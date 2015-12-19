@@ -20,8 +20,8 @@ XOX.controller('myController', function($scope, $http) {
 	$scope.move = function(index, value)
 	{
 		$scope.board[index].value = 'X';
-		$scope.checkGameOver($scope.range);
 
+		$scope.checkGameOver($scope.range);
 		if(!$scope.isGameOver)
 		{
 			$scope.aiNoLose('O');
@@ -54,7 +54,6 @@ XOX.controller('myController', function($scope, $http) {
 		}
 		else if($scope.suggedtMove != -1)
 		{
-
 			$scope.board[$scope.suggestedMove].value = 'O';
 			$scope.checkGameOver($scope.range);
 		}
@@ -80,11 +79,7 @@ XOX.controller('myController', function($scope, $http) {
 		var item2 = $scope.board[b].value;
 		var item3 = $scope.board[c].value;
 		var move  = -1;
-
 		
-
-		
-
 		if($scope.suggestedMove == -1)	//about to win check
 		{				
 			if(item1 == param)
